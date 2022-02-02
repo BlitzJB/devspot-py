@@ -27,8 +27,15 @@ class HackathonCollection:
     def __getitem__(self, index):
         return self.hackathons[index]
 
+    def __eq__(self, __o: object) -> bool:
+        if not isinstance(__o, HackathonCollection): raise TypeError(f'HackathonCollection can only be compared to HackathonCollection objects')
+        return {hack.id for hack in self.hackathons} == {hack.id for hack in __o.hackathons}
+
     def get_hackathon_by_id(self, id):
         return next(hackathon for hackathon in self.hackathons if hackathon.id == id)
+    
+    def get_hackathons_by_ids(self, ids: list):
+        return next(hackathon for hackathon in self.hackathons if hackathon.id in ids)
     
     def get_public_hackathons(self):
         return [hackathon for hackathon in self.hackathons if not hackathon.invite_only]
